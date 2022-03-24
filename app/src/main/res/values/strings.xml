@@ -16,5 +16,7 @@
         trough a video call"</string>
     <string name="menu_btn">"Show menu"</string>
     <string name="menu_dscr">"Discover a plenty of delicious meals"</string>
+    <string name="contact_us">"Contact us:\n +421 123654789"</string>
+    <string name="menu">"Menu"</string>
 
 </resources>

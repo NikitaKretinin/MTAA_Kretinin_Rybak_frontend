@@ -1,6 +1,7 @@
 package fiit.mtaa.frontend.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
@@ -19,15 +20,15 @@ class HomepageActivity() : AppCompatActivity() {
         setContentView(R.layout.homepage)
 
         // get reference to all views
-        var loginName = findViewById<TextView>(R.id.login_tw)
-        val user: User = intent.getSerializableExtra("User") as User
+        var loginName = findViewById<TextView>(R.id.login_tv)
         loginName.text = "signed in as ${user.getLogin()}"
 
         var btnMenu = findViewById<Button>(R.id.menu_btn)
         var btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
 
         btnMenu.setOnClickListener {
-            Toast.makeText(this@HomepageActivity, "Menu", Toast.LENGTH_LONG).show()
+            val intent = Intent(this@HomepageActivity, MenuActivity::class.java)
+            startActivity(intent)
         }
 
         btnLiveCooking.setOnClickListener {

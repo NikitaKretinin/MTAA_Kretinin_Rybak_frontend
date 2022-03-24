@@ -32,6 +32,8 @@ val client = HttpClient(CIO) {
     }
 }
 
+lateinit var user: User
+
 class MainActivity : AppCompatActivity() {
 
     // Function to control data and register a new user
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             runBlocking {
                 launch {
-                    val user: User = client.post("$server_ip/addUser") {
+                    val newUser: User = client.post("$server_ip/addUser") {
                         contentType(ContentType.Application.Json)
                         body = User(login, pass)
                     }
@@ -74,17 +76,15 @@ class MainActivity : AppCompatActivity() {
                 launch { // launch a new coroutine and continue
 //                    val response: HttpResponse = client.get("$server_ip/getUsers")
                     try {
-                        val user: User = client.get("$server_ip/getUser") {
+                        user = client.get("$server_ip/getUser") {
                             formData {
                                 parameter("login", usernameText)
                             }
                         }
-                        user.printUserInfo()
                         if (user.verify(usernameText.toString(), passwordText.toString())) {
                             Toast.makeText(this@MainActivity, "Logged " +
                                     "as $usernameText", Toast.LENGTH_LONG).show()
-                            val intent = Intent(this@MainActivity,HomepageActivity::class.java)
-                            intent.putExtra("User",user)
+                            val intent = Intent(this@MainActivity, HomepageActivity::class.java)
                             startActivity(intent)
                         } else {
                             Toast.makeText(this@MainActivity, "Wrong login or password!", Toast.LENGTH_LONG).show()
