@@ -21,9 +21,25 @@ class MenuActivity() : AppCompatActivity() {
 
         // Initialize data.
         val mealsDataset = MealDatasource().loadMeals()
+        val adapter = MealAdapter(this, mealsDataset)
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_rv)
-        recyclerView.adapter = MealAdapter(this, mealsDataset)
+        recyclerView.adapter = adapter
+
+        var btmReset = findViewById<Button>(R.id.reset_btn)
+        var btnProceed = findViewById<Button>(R.id.proceed_btn)
+
+        btmReset.setOnClickListener {
+            for (item in mealsDataset) {
+                item.count = 0
+            }
+            adapter.notifyDataSetChanged()
+            Toast.makeText(this@MenuActivity, "Reset", Toast.LENGTH_LONG).show()
+        }
+
+        btnProceed.setOnClickListener {
+            Toast.makeText(this@MenuActivity, "Proceed", Toast.LENGTH_LONG).show()
+        }
 
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

@@ -32,7 +32,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appName_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/appName_tv"
+        android:layout_marginBottom="60dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu_rv"
@@ -45,6 +46,30 @@
         app:layout_constraintEnd_toEndOf="@+id/background_view"
         app:layout_constraintStart_toStartOf="@+id/background_view"
         app:layout_constraintTop_toTopOf="@+id/background_view" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:background="@drawable/button_styles"
+        android:text="Reset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background_view"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="60dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/proceed_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:background="@drawable/button_styles"
+        android:text="Proceed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background_view"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
