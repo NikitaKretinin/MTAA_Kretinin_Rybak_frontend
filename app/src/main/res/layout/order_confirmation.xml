@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_confirm_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/menu_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/skyblue"
+        android:shadowRadius="15"
+        android:text="@string/my_meals"
+        android:textColor="@color/royalblue"
+        android:textSize="@android:dimen/app_icon_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/total_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/background_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_tv"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/totalPrice_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/background_view"
+        app:layout_constraintStart_toEndOf="@+id/total_tv"
+        app:layout_constraintTop_toBottomOf="@+id/menu_tv" />
+
+    <View
+        android:id="@+id/background_view"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/content_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_tv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:scrollbars="vertical"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="@+id/background_view"
+        app:layout_constraintEnd_toEndOf="@+id/background_view"
+        app:layout_constraintStart_toStartOf="@+id/background_view"
+        app:layout_constraintTop_toTopOf="@+id/background_view" />
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:autofillHints=""
+        android:hint="@string/address"
+        android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background_view" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:autofillHints=""
+        android:hint="@string/phone"
+        android:inputType="phone"
+        android:selectAllOnFocus="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/discard_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone">
+
+        <RadioButton
+            android:id="@+id/cash_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/by_cash"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/card_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/with_card"
+            android:textSize="18sp"
+            android:checked="true"/>
+
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/discard_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="60dp"
+        android:background="@drawable/button_styles"
+        android:text="Discard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirm_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/button_styles"
+        android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

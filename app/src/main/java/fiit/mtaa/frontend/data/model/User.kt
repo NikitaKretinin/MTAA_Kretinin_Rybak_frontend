@@ -5,9 +5,7 @@ import java.io.Serializable
 data class User (private val login: String, private val password: String): Serializable{
     private val id: Long? = null
     private val user_role: String = "guest"
-    fun printUserInfo() {
-        println("User $id:\n login: $login,\n password: $password,\n role: $user_role\n")
-    }
+
     fun verify (login: String, password: String): Boolean{
         return (this.login == login && this.password == password)
     }
@@ -18,5 +16,9 @@ data class User (private val login: String, private val password: String): Seria
 
     fun getRole(): String {
         return this.user_role
+    }
+
+    fun getId(): Long? {
+        return this.id
     }
 }

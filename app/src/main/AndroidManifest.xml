@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".ui.HomepageActivity" />
         <activity android:name=".ui.MenuActivity" />
+        <activity android:name=".ui.OrderConfirmationActivity" android:windowSoftInputMode="adjustPan" />
     </application>
 
 

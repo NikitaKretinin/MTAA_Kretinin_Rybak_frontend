@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.User
 
+lateinit var user: User
+
 class HomepageActivity() : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
@@ -20,11 +22,12 @@ class HomepageActivity() : AppCompatActivity() {
         setContentView(R.layout.homepage)
 
         // get reference to all views
-        var loginName = findViewById<TextView>(R.id.login_tv)
+        user = intent.getSerializableExtra("User") as User
+        val loginName = findViewById<TextView>(R.id.login_tv)
         loginName.text = "signed in as ${user.getLogin()}"
 
-        var btnMenu = findViewById<Button>(R.id.menu_btn)
-        var btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
+        val btnMenu = findViewById<Button>(R.id.menu_btn)
+        val btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
 
         btnMenu.setOnClickListener {
             val intent = Intent(this@HomepageActivity, MenuActivity::class.java)

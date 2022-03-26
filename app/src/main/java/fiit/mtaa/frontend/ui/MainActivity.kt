@@ -32,8 +32,6 @@ val client = HttpClient(CIO) {
     }
 }
 
-lateinit var user: User
-
 class MainActivity : AppCompatActivity() {
 
     // Function to control data and register a new user
@@ -85,6 +83,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(this@MainActivity, "Logged " +
                                     "as $usernameText", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@MainActivity, HomepageActivity::class.java)
+                            intent.putExtra("User", user)
                             startActivity(intent)
                         } else {
                             Toast.makeText(this@MainActivity, "Wrong login or password!", Toast.LENGTH_LONG).show()
@@ -93,10 +92,6 @@ class MainActivity : AppCompatActivity() {
                         println(e.localizedMessage)
                         Toast.makeText(this@MainActivity, "Wrong login or password!", Toast.LENGTH_LONG).show()
                     }
-                    /* users: List<User> = get...
-                    users.forEach {
-                        it.printUserInfo()
-                    }*/
                 }
             }
         }

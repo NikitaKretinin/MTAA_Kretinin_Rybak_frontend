@@ -1,5 +1,7 @@
 package fiit.mtaa.frontend.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import io.ktor.utils.io.charsets.Charsets
 import java.io.Serializable
 
