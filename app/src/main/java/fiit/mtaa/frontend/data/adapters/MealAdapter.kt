@@ -16,7 +16,6 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.Meal
-import fiit.mtaa.frontend.ui.user
 import java.lang.Byte.decode
 import java.util.*
 
@@ -24,6 +23,7 @@ import java.util.*
 class MealAdapter (
     private val context: Context,
     private val dataset: List<Meal>,
+    private val role: String
 ) : RecyclerView.Adapter<MealAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -68,7 +68,7 @@ class MealAdapter (
                 holder.photo.setImageBitmap(bmp)
             }
 
-            if (user.getRole() == "manager") {
+            if (role == "manager") {
                 holder.changeBtn.visibility = View.VISIBLE;
                 holder.deleteDtn.visibility = View.VISIBLE;
             }

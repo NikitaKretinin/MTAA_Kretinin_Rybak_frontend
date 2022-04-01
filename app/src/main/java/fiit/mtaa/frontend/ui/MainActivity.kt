@@ -7,7 +7,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.JsonObject
 import fiit.mtaa.frontend.R
+import fiit.mtaa.frontend.data.model.Contact
 import fiit.mtaa.frontend.data.model.User
 import org.json.JSONObject
 import io.ktor.client.*
@@ -74,20 +76,20 @@ class MainActivity : AppCompatActivity() {
                 launch { // launch a new coroutine and continue
 //                    val response: HttpResponse = client.get("$server_ip/getUsers")
                     try {
-                        user = client.get("$server_ip/getUser") {
-                            formData {
-                                parameter("login", usernameText)
-                            }
+                        val mapObj = mutableMapOf<String, String>()
+                        mapObj["login"] = usernameText.toString()
+                        mapObj["password"] = passwordText.toString()
+                        val response: JsonObject = client.get("$server_ip/getToken") {
+                            contentType(ContentType.Application.Json)
+                            body = mapObj
                         }
-                        if (user.verify(usernameText.toString(), passwordText.toString())) {
-                            Toast.makeText(this@MainActivity, "Logged " +
-                                    "as $usernameText", Toast.LENGTH_LONG).show()
-                            val intent = Intent(this@MainActivity, HomepageActivity::class.java)
-                            intent.putExtra("User", user)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this@MainActivity, "Wrong login or password!", Toast.LENGTH_LONG).show()
-                        }
+                        Toast.makeText(this@MainActivity, "Logged " +
+                                "as $usernameText", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@MainActivity, HomepageActivity::class.java)
+                        intent.putExtra("Token", response.get("token").asString)
+                        intent.putExtra("Login", usernameText.toString())
+                        intent.putExtra("Role", response.get("role").asString)
+                        startActivity(intent)
                     } catch (e: ClientRequestException) {
                         println(e.localizedMessage)
                         Toast.makeText(this@MainActivity, "Wrong login or password!", Toast.LENGTH_LONG).show()

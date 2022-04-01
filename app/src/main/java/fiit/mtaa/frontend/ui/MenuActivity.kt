@@ -23,7 +23,7 @@ class MenuActivity() : AppCompatActivity() {
 
         // Initialize data.
         val mealsDataset = MealDatasource().loadMeals()
-        val adapter = MealAdapter(this, mealsDataset)
+        val adapter = MealAdapter(this, mealsDataset, role)
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_rv)
         recyclerView.adapter = adapter

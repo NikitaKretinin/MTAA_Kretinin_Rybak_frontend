@@ -78,20 +78,20 @@ class OrderConfirmationActivity() : AppCompatActivity() {
                         val contact: Contact = Contact(etAddress.text.toString(), etPhone.text.toString())
                         val mapObj = mutableMapOf<String, Contact>()
                         mapObj["contact"] = contact
-
-                        var response: Response = client.put("$server_ip/editUser/${user.getId()}") {
+                        var response: Response = client.put("$server_ip/editUser") {
                             contentType(ContentType.Application.Json)
                             body = mapObj
-                            print("Hi")
+                            header("Authorization", token)
                         }
+
                         response = client.post("$server_ip/addOrder") {
                             parameter("mealsId", mealsIDs.joinToString(separator = ","))
-                            parameter("userId", user.getId())
                             if (selectedOption == R.id.cash_rb) {
                                 parameter("pay_by_cash", true)
                             } else {
                                 parameter("pay_by_cash", false)
                             }
+                            header("Authorization", token)
                         }
                         Toast.makeText(this@OrderConfirmationActivity, "Order Registered", Toast.LENGTH_LONG).show()
                     }

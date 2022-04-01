@@ -12,7 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.User
 
-lateinit var user: User
+lateinit var token: String
+lateinit var role: String
 
 class HomepageActivity() : AppCompatActivity() {
 
@@ -20,11 +21,15 @@ class HomepageActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.homepage)
-
+        lateinit var login: String
         // get reference to all views
-        user = intent.getSerializableExtra("User") as User
+        if (intent.hasExtra("Token") && intent.hasExtra("Role")) {
+            token = intent.getStringExtra("Token") as String
+            role = intent.getStringExtra("Role") as String
+            login = intent.getStringExtra("Login") as String
+        }
         val loginName = findViewById<TextView>(R.id.login_tv)
-        loginName.text = "signed in as ${user.getLogin()}"
+        loginName.text = "signed in as $login"
 
         val btnMenu = findViewById<Button>(R.id.menu_btn)
         val btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
