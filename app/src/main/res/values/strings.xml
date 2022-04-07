@@ -25,6 +25,9 @@
     <string name="phone">"+421 xxxxxxxxx"</string>
     <string name="by_cash">"Cash"</string>
     <string name="with_card">"Online with card"</string>
+    <!-- WebRTC -->
+    <string name="pref_speakerphone_key">speakerphone_preference</string>
+    <string name="pref_speakerphone_default">auto</string>
 
 
 </resources>

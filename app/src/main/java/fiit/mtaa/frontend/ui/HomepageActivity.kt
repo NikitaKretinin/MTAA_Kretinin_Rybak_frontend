@@ -40,6 +40,8 @@ class HomepageActivity() : AppCompatActivity() {
         }
 
         btnLiveCooking.setOnClickListener {
+            val intent = Intent(this@HomepageActivity, StartCallActivity::class.java)
+            startActivity(intent)
             Toast.makeText(this@HomepageActivity, "Live Cooking", Toast.LENGTH_LONG).show()
         }
     }
