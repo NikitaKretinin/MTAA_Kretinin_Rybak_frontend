@@ -6,7 +6,7 @@
     android:layout_margin="16dp"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.StartCallActivity">
     <ImageView
         android:id="@+id/image"
         android:src="@drawable/webrtc"
@@ -18,7 +18,7 @@
         android:layout_below="@+id/image"
         android:layout_width="match_parent"
         app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="@color/teal_700"
+        app:cardBackgroundColor="@color/dodgerblue"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
