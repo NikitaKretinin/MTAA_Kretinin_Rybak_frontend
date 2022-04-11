@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.User
+import java.io.File
 
 lateinit var token: String
 lateinit var role: String
@@ -21,6 +22,7 @@ class HomepageActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.homepage)
+
         lateinit var login: String
         // get reference to all views
         if (intent.hasExtra("Token") && intent.hasExtra("Role")) {
@@ -40,9 +42,14 @@ class HomepageActivity() : AppCompatActivity() {
         }
 
         btnLiveCooking.setOnClickListener {
-            val intent = Intent(this@HomepageActivity, StartCallActivity::class.java)
-            startActivity(intent)
-            Toast.makeText(this@HomepageActivity, "Live Cooking", Toast.LENGTH_LONG).show()
+            if (isOnline(this@HomepageActivity)) {
+                val intent = Intent(this@HomepageActivity, StartCallActivity::class.java)
+                startActivity(intent)
+                Toast.makeText(this@HomepageActivity, "Live Cooking", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this@HomepageActivity, "Live Cooking needs an internet connection", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 }

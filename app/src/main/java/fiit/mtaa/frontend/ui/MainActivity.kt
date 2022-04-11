@@ -1,17 +1,19 @@
 package fiit.mtaa.frontend.ui
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.JsonObject
 import fiit.mtaa.frontend.R
-import fiit.mtaa.frontend.data.model.Contact
 import fiit.mtaa.frontend.data.model.User
-import org.json.JSONObject
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -21,9 +23,9 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.*
 
 var server_ip: String = "http://" + (System.getenv("MTAA_SERVER_IP") ?: "192.168.1.5") + ":8080"
 
@@ -33,6 +35,48 @@ val client = HttpClient(CIO) {
         acceptContentTypes += ContentType("application", "json")
     }
 }
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun isOnline(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (connectivityManager != null) {
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+//                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+//                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+//                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+    }
+    return false
+}
+
+fun <T: Any> saveObject(context: Context, record: T, path: String) {
+    val fos: FileOutputStream = context.openFileOutput(path, Context.MODE_PRIVATE)
+    val os = ObjectOutputStream(fos)
+    os.writeObject(record)
+    os.close()
+    fos.close()
+}
+
+fun <T: Any> loadObject(context: Context, path: String): T {
+    val fis: FileInputStream = context.openFileInput(path)
+    val `is` = ObjectInputStream(fis)
+    val result: T = `is`.readObject() as T
+    `is`.close()
+    fis.close()
+    return result
+}
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,9 +101,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val userDataFile = File(this@MainActivity.filesDir, "userData.ser")
+
+        if (!isOnline(this@MainActivity)) {
+            val fileExists = userDataFile.exists()
+
+            if (fileExists) {
+                val intent = Intent(this@MainActivity, HomepageActivity::class.java)
+                val user: User = loadObject(this@MainActivity, "userData.ser") as User
+
+                intent.putExtra("Token", "")
+                intent.putExtra("Login", "${user.getLogin()} (offline)")
+                intent.putExtra("Role", user.getRole())
+                startActivity(intent)
+            } else {
+                Toast.makeText(this@MainActivity, "No info about previous session found",
+                    Toast.LENGTH_LONG).show()
+            }
+        }
 
         // get reference to all views
         var username = findViewById<EditText>(R.id.username)
@@ -83,6 +147,8 @@ class MainActivity : AppCompatActivity() {
                             contentType(ContentType.Application.Json)
                             body = mapObj
                         }
+                        saveObject(this@MainActivity, User( usernameText.toString(),
+                            response.get("role").asString ), "userData.ser")
                         Toast.makeText(this@MainActivity, "Logged " +
                                 "as $usernameText", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@MainActivity, HomepageActivity::class.java)
