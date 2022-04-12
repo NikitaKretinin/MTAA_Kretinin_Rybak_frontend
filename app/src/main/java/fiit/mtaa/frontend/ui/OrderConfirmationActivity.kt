@@ -15,9 +15,11 @@ import fiit.mtaa.frontend.data.model.User
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.cio.*
+import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
+import java.net.ConnectException
 
 class OrderConfirmationActivity() : AppCompatActivity() {
 
@@ -74,26 +76,36 @@ class OrderConfirmationActivity() : AppCompatActivity() {
             if (validData(etAddress.text.toString(), etPhone.text.toString())) {
                 runBlocking {
                     launch {
-                        val selectedOption: Int = radioGroup!!.checkedRadioButtonId
-                        val contact: Contact = Contact(etAddress.text.toString(), etPhone.text.toString())
-                        val mapObj = mutableMapOf<String, Contact>()
-                        mapObj["contact"] = contact
-                        var response: Response = client.put("$server_ip/editUser") {
-                            contentType(ContentType.Application.Json)
-                            body = mapObj
-                            header("Authorization", token)
-                        }
-
-                        response = client.post("$server_ip/addOrder") {
-                            parameter("mealsId", mealsIDs.joinToString(separator = ","))
-                            if (selectedOption == R.id.cash_rb) {
-                                parameter("pay_by_cash", true)
-                            } else {
-                                parameter("pay_by_cash", false)
+                        try {
+                            val selectedOption: Int = radioGroup!!.checkedRadioButtonId
+                            val contact: Contact =
+                                Contact(etAddress.text.toString(), etPhone.text.toString())
+                            val mapObj = mutableMapOf<String, Contact>()
+                            mapObj["contact"] = contact
+                            var response: Response = client.put("$server_ip/editUser") {
+                                contentType(ContentType.Application.Json)
+                                body = mapObj
+                                header("Authorization", token)
                             }
-                            header("Authorization", token)
+
+                            response = client.post("$server_ip/addOrder") {
+                                parameter("mealsId", mealsIDs.joinToString(separator = ","))
+                                if (selectedOption == R.id.cash_rb) {
+                                    parameter("pay_by_cash", true)
+                                } else {
+                                    parameter("pay_by_cash", false)
+                                }
+                                header("Authorization", token)
+                            }
+                            Toast.makeText(
+                                this@OrderConfirmationActivity,
+                                "Order Registered",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }  catch (e: Exception) {
+                            println(e.localizedMessage)
+                            ErrorOutput(this@OrderConfirmationActivity, e)
                         }
-                        Toast.makeText(this@OrderConfirmationActivity, "Order Registered", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {

@@ -25,8 +25,15 @@ class MenuActivity() : AppCompatActivity() {
         lateinit var mealsDataset: List<Meal>
         // Initialize data.
         if (isOnline(this@MenuActivity)) {
-            mealsDataset = MealDatasource().loadMeals()
-            saveObject(this@MenuActivity, mealsDataset, "menuData.ser")
+            try {
+                mealsDataset = MealDatasource().loadMeals()
+                saveObject(this@MenuActivity, mealsDataset, "menuData.ser")
+            } catch (e: Exception) {
+                println(e.localizedMessage)
+                ErrorOutput(this@MenuActivity, e)
+                this@MenuActivity.onBackPressed() // return to the previous screen
+                return
+            }
         } else {
             val userDataFile = File(this@MenuActivity.filesDir, "menuData.ser")
             val fileExists = userDataFile.exists()

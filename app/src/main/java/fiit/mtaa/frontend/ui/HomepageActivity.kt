@@ -31,7 +31,12 @@ class HomepageActivity() : AppCompatActivity() {
             login = intent.getStringExtra("Login") as String
         }
         val loginName = findViewById<TextView>(R.id.login_tv)
-        loginName.text = "signed in as $login"
+        if (isOnline(this@HomepageActivity)) {
+            loginName.text = "signed in as $login"
+        } else {
+            loginName.text = "signed in as $login (offline)"
+        }
+
 
         val btnMenu = findViewById<Button>(R.id.menu_btn)
         val btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
