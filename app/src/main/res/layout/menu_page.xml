@@ -23,6 +23,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/add_meal"
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/content_view"
+        android:shadowColor="@color/skyblue"
+        android:shadowRadius="15"
+        android:text="+"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/menu_tv"
+        app:layout_constraintTop_toTopOf="@+id/menu_tv"
+        android:layout_marginStart="20dp"/>
+
     <View
         android:id="@+id/background_view"
         android:layout_width="0dp"
