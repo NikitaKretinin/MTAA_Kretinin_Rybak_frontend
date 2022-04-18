@@ -69,6 +69,20 @@
         app:layout_constraintStart_toStartOf="@+id/live_cooking_btn"
         app:layout_constraintTop_toBottomOf="@+id/live_cooking_btn" />
 
+    <TextView
+        android:id="@+id/orders_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:selectAllOnFocus="true"
+        android:text="@string/manage_orders"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:visibility="invisible"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/live_cooking_btn"
+        app:layout_constraintTop_toBottomOf="@+id/orders_btn" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/menu_btn"
         android:layout_width="100dp"
@@ -91,6 +105,18 @@
         android:text="@string/live_cooking"
         app:layout_constraintStart_toStartOf="@+id/menu_btn"
         app:layout_constraintTop_toBottomOf="@+id/menu_tv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/orders_btn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible"
+        android:background="@drawable/button_styles"
+        android:text="@string/manage_orders_btn"
+        app:layout_constraintStart_toStartOf="@+id/live_cooking_tv"
+        app:layout_constraintTop_toBottomOf="@+id/live_cooking_tv" />
 
     <TextView
         android:layout_width="wrap_content"
