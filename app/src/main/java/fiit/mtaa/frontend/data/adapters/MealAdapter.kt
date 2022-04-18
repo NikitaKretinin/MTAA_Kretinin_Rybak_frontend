@@ -2,6 +2,7 @@ package fiit.mtaa.frontend.data.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -13,16 +14,25 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.Meal
+import fiit.mtaa.frontend.ui.NewMealActivity
+import fiit.mtaa.frontend.ui.client
+import fiit.mtaa.frontend.ui.server_ip
+import fiit.mtaa.frontend.ui.token
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.Byte.decode
 import java.util.*
 
 
 class MealAdapter (
     private val context: Context,
-    private val dataset: List<Meal>,
+    private val dataset: MutableList<Meal>,
     private val role: String
 ) : RecyclerView.Adapter<MealAdapter.ItemViewHolder>() {
 
@@ -77,6 +87,27 @@ class MealAdapter (
                 holder.counter.visibility = View.VISIBLE;
                 item.count += 1
                 holder.counter.text = item.count.toString()
+            }
+
+            holder.changeBtn.setOnClickListener {
+                val intent = Intent(context, NewMealActivity::class.java)
+                intent.putExtra("Meal", item)
+                context.startActivity(intent)
+                notifyItemChanged(position)
+            }
+
+            holder.deleteDtn.setOnClickListener {
+                val id = dataset[position].id
+                runBlocking {
+                    launch {
+                        val response: HttpResponse = client.delete("$server_ip/delMeal/$id") {
+                            header("Authorization", token)
+                        }
+                    }
+                }
+                dataset.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, getItemCount());
             }
         }
     }
