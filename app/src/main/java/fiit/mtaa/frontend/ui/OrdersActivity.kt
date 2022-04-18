@@ -31,7 +31,7 @@ class OrdersActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.orders_page)
 
-        lateinit var ordersDataset: List<Order>
+        lateinit var ordersDataset: MutableList<Order>
         // Initialize data.
         if (isOnline(this@OrdersActivity)) {
             try {
@@ -48,7 +48,7 @@ class OrdersActivity() : AppCompatActivity() {
             val fileExists = userDataFile.exists()
 
             if (fileExists) {
-                ordersDataset = loadObject(this@OrdersActivity, "ordersData.ser") as List<Order>
+                ordersDataset = loadObject(this@OrdersActivity, "ordersData.ser") as MutableList<Order>
             } else {
                 Toast.makeText(this@OrdersActivity, "No info about orders found in cache",
                     Toast.LENGTH_LONG).show()
@@ -59,7 +59,7 @@ class OrdersActivity() : AppCompatActivity() {
 
         val adapter = OrderAdapter(this, ordersDataset)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.menu_rv)
+        val recyclerView = findViewById<RecyclerView>(R.id.orders_rv)
         recyclerView.adapter = adapter
 
         val btmReturn = findViewById<Button>(R.id.return_btn)

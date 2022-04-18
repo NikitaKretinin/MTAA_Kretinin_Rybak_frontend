@@ -11,8 +11,8 @@ import kotlinx.coroutines.runBlocking
 
 class OrderDatasource() {
 
-    fun loadUndoneOrders(): List<Order> {
-        lateinit var orders: List<Order>
+    fun loadUndoneOrders(): MutableList<Order> {
+        lateinit var orders: MutableList<Order>
         runBlocking {
             launch {
                 orders = client.get("$server_ip/getUndoneOrders") {

@@ -37,6 +37,7 @@
         <activity android:name=".ui.StartCallActivity" />
         <activity android:name=".ui.RTCActivity" />
         <activity android:name=".ui.NewMealActivity" />
+        <activity android:name=".ui.OrdersActivity" />
     </application>
 
 

@@ -21,7 +21,7 @@ class MenuActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_page)
 
-        lateinit var mealsDataset: List<Meal>
+        lateinit var mealsDataset: MutableList<Meal>
         // Initialize data.
         if (isOnline(this@MenuActivity)) {
             try {
@@ -38,7 +38,7 @@ class MenuActivity() : AppCompatActivity() {
             val fileExists = userDataFile.exists()
 
             if (fileExists) {
-                mealsDataset = loadObject(this@MenuActivity, "menuData.ser") as List<Meal>
+                mealsDataset = loadObject(this@MenuActivity, "menuData.ser") as MutableList<Meal>
             } else {
                 Toast.makeText(this@MenuActivity, "No info about menu found in cache",
                     Toast.LENGTH_LONG).show()

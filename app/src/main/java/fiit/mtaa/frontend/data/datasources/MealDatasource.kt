@@ -9,8 +9,8 @@ import kotlinx.coroutines.runBlocking
 
 class MealDatasource() {
 
-    fun loadMeals(): List<Meal> {
-        lateinit var meals: List<Meal>
+    fun loadMeals(): MutableList<Meal> {
+        lateinit var meals: MutableList<Meal>
         runBlocking {
             launch {
                 meals = client.get("$server_ip/getMeals")

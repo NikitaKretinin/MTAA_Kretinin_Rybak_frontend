@@ -22,7 +22,7 @@ import java.util.*
 
 class OrderAdapter(
     private val context: Context,
-    private val orders: List<Order>,
+    private val orders: MutableList<Order>,
 ) : RecyclerView.Adapter<OrderAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -47,7 +47,7 @@ class OrderAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.itemView.apply {
-            holder.login.text =  orders[position].user.getLogin()
+            holder.login.text =  orders[position].user
             val priceStr = orders[position].price
             holder.price.text = "$priceStr €"
         }
@@ -61,7 +61,9 @@ class OrderAdapter(
                     }
                 }
             }
-            orders.drop(position)
+            orders.removeAt(position)
+            this.notifyItemRemoved(position)
+            notifyItemRangeChanged(position, getItemCount());
         }
     }
 }

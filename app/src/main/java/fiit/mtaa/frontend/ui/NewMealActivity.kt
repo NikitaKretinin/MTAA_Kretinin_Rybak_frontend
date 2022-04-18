@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.ImageFilePath
+import fiit.mtaa.frontend.data.model.Meal
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
@@ -23,6 +24,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import java.lang.Integer.parseInt
 import java.util.*
 
 //private const val FILES_MANAGEMENT_PERMISSION_CODE = 1
@@ -50,11 +52,23 @@ class NewMealActivity() : AppCompatActivity() {
         var description = findViewById<EditText>(R.id.enter_description)
         var price = findViewById<EditText>(R.id.enter_price)
 
+        var meal: Meal? = null
+        if (intent.hasExtra("Meal")) {
+            meal = intent.getSerializableExtra("Meal") as Meal
+        }
+
+        if (meal != null) {
+            name.setText(meal.name)
+            description.setText(meal.description)
+            price.setText(meal.price.toString())
+        }
 
         btmConfirm.setOnClickListener {
-            val nameText = name.text
-            val descriptionText = description.text
-            val priceText = price.text
+            var nameText = name.text
+            var descriptionText = description.text
+            var priceText = price.text
+
+
 
 
             /*if ((ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
@@ -66,33 +80,34 @@ class NewMealActivity() : AppCompatActivity() {
 
             runBlocking {
                 launch {
-//                    val f: File = getFile(applicationContext, uri)
-//                    val pathl = imageUri?.toFile()
-                    //val bufferedReader: BufferedReader = File("/media/external_primary/images/media/22103").bufferedReader()
-                    //val inputString = bufferedReader.use { it.readText() }
 
-                    /*val inputStream: InputStream? = contentResolver.openInputStream(imageUri!!)
-                    val inputString = inputStream?.bufferedReader().use { it?.readText() }*/
-                    /*val file: MultipartFile = MockMultipartFile(
-                        "photo.jpg",
-                        "photo.jpg",
-                        ContentType.APPLICATION_OCTET_STREAM.toString(),
-                        inputStream
-                    )*/
-
-                    val bytes = File(realPath).readBytes()
                     try {
-                        val response: HttpResponse = client.post("$server_ip/addMeal") {
-                            body = MultiPartFormDataContent(
-                                formData {
-                                    append("file", encodedBytes)
-                                    append("name", "abcd")
-                                    append("description", "abc")
-                                    append("price", 2)
-                                }
-                            )
-                            header("Authorization", token)
+                        if (meal == null) {
+                            val response: HttpResponse = client.post("$server_ip/addMeal") {
+                                body = MultiPartFormDataContent(
+                                    formData {
+                                        append("file", encodedBytes)
+                                        append("name", nameText.toString())
+                                        append("description", descriptionText.toString())
+                                        append("price", parseInt(priceText.toString()))
+                                    }
+                                )
+                                header("Authorization", token)
+                            }
+                        } else {
+                            val response: HttpResponse = client.put("$server_ip/editMeal/${meal.id}") {
+                                body = MultiPartFormDataContent(
+                                    formData {
+                                        append("file", encodedBytes)
+                                        append("name", nameText.toString())
+                                        append("description", descriptionText.toString())
+                                        append("price", parseInt(priceText.toString()))
+                                    }
+                                )
+                                header("Authorization", token)
+                            }
                         }
+
 
                         /*val response: HttpResponse = client.submitFormWithBinaryData(
                             url = "$server_ip/addMeal",
