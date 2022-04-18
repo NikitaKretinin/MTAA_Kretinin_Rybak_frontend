@@ -3,8 +3,8 @@ package fiit.mtaa.frontend.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +12,6 @@ import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.adapters.MealAdapter
 import fiit.mtaa.frontend.data.datasources.MealDatasource
 import fiit.mtaa.frontend.data.model.Meal
-import fiit.mtaa.frontend.data.model.User
 import java.io.File
 
 class MenuActivity() : AppCompatActivity() {
@@ -55,6 +54,11 @@ class MenuActivity() : AppCompatActivity() {
 
         val btmReset = findViewById<Button>(R.id.reset_btn)
         val btnProceed = findViewById<Button>(R.id.proceed_btn)
+        val btnAddMeal = findViewById<Button>(R.id.add_new_meal_btn)
+
+        if (role == "manager"){
+            btnAddMeal.visibility = View.VISIBLE
+        }
 
         btmReset.setOnClickListener {
             for (item in mealsDataset) {
@@ -100,8 +104,22 @@ class MenuActivity() : AppCompatActivity() {
             }
         }
 
+        btnAddMeal.setOnClickListener{
+            val intent = Intent(this@MenuActivity, NewMealActivity::class.java)
+            startActivity(intent)
+        }
+
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true)
+    }
+
+    override fun onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
     }
 }

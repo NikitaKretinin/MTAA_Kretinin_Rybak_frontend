@@ -37,7 +37,7 @@ class HomepageActivity() : AppCompatActivity() {
             loginName.text = "signed in as $login (offline)"
         }
 
-        val photo:
+//        val photo:
         val btnMenu = findViewById<Button>(R.id.menu_btn)
         val btnLiveCooking = findViewById<Button>(R.id.live_cooking_btn)
 

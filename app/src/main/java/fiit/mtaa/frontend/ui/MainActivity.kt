@@ -29,7 +29,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.*
 import java.net.ConnectException
 
-var server_ip: String = "http://" + (System.getenv("MTAA_SERVER_IP") ?: "147.175.163.149") + ":8080"
+var server_ip: String = "http://" + (System.getenv("MTAA_SERVER_IP") ?: "10.10.39.24") + ":8080"
 
 val client = HttpClient(CIO) {
     install(JsonFeature) {
