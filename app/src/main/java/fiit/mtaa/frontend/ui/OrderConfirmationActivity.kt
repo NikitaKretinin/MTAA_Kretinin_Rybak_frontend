@@ -102,6 +102,7 @@ class OrderConfirmationActivity() : AppCompatActivity() {
                                 "Order Registered",
                                 Toast.LENGTH_LONG
                             ).show()
+                            this@OrderConfirmationActivity.onBackPressed()
                         }  catch (e: Exception) {
                             println(e.localizedMessage)
                             ErrorOutput(this@OrderConfirmationActivity, e)

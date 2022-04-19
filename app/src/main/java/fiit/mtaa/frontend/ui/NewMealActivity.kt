@@ -36,7 +36,7 @@ class NewMealActivity() : AppCompatActivity() {
     var realPath = ""
     lateinit var imageBitmap: Bitmap
     var encodedBytes: ByteArray? = null
-    var isFileChosen = findViewById<TextView>(R.id.tv_file_path)
+    lateinit var isFileChosen: TextView
 
     @OptIn(InternalAPI::class)
     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,6 +52,7 @@ class NewMealActivity() : AppCompatActivity() {
         var name = findViewById<EditText>(R.id.enter_name)
         var description = findViewById<EditText>(R.id.enter_description)
         var price = findViewById<EditText>(R.id.enter_price)
+        isFileChosen = findViewById<TextView>(R.id.tv_file_path)
 
         var meal: Meal? = null
         if (intent.hasExtra("Meal")) {
@@ -177,6 +178,7 @@ class NewMealActivity() : AppCompatActivity() {
                 imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 80, stream)
                 encodedBytes = stream.toByteArray()
+                isFileChosen.text = "Photo chosen"
                 //encodedBytes = Base64.getEncoder().encode(imageBitmap.toString().toByteArray())
                 //val bmp = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
             } catch (e: IOException) {

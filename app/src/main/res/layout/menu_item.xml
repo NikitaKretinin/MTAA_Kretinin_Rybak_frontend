@@ -85,7 +85,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="10dp"
         android:background="@drawable/button_styles"
-        android:text="Change"
+        android:text="Edit"
         android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/add_btn"
         app:layout_constraintTop_toTopOf="@+id/add_btn" />
