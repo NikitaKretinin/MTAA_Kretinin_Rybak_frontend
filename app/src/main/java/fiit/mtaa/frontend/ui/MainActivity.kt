@@ -29,7 +29,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.*
 import java.net.ConnectException
 
-var server_ip: String = "http://" + (System.getenv("MTAA_SERVER_IP") ?: "10.10.39.24") + ":8080"
+var server_ip: String = "http://" + (System.getenv("MTAA_SERVER_IP") ?: "147.175.163.149") + ":8080"
 
 val client = HttpClient(CIO) {
     install(JsonFeature) {
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "Registered", Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         println(e.localizedMessage)
-                        ErrorOutput(this@MainActivity, e)
+                        Toast.makeText(this@MainActivity, "Registration failed", Toast.LENGTH_LONG).show()
                     }
                 }
             }

@@ -35,7 +35,8 @@ class NewMealActivity() : AppCompatActivity() {
     var imageUri: Uri? = null
     var realPath = ""
     lateinit var imageBitmap: Bitmap
-    lateinit var encodedBytes: ByteArray
+    var encodedBytes: ByteArray? = null
+    var isFileChosen = findViewById<TextView>(R.id.tv_file_path)
 
     @OptIn(InternalAPI::class)
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,52 +65,65 @@ class NewMealActivity() : AppCompatActivity() {
         }
 
         btmConfirm.setOnClickListener {
-            var nameText = name.text
-            var descriptionText = description.text
-            var priceText = price.text
+            var nameText = name.text.toString()
+            var descriptionText = description.text.toString()
+            var priceText = price.text.toString()
 
+            if(nameText.isEmpty() || descriptionText.isEmpty() || priceText.isEmpty()){
+                Toast.makeText(this@NewMealActivity, "Fields can not be empty!", Toast.LENGTH_LONG).show()
+            }
 
+            else {
+                runBlocking {
+                    launch {
 
+                        try {
+                            if (meal == null) {
 
-            /*if ((ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED)) {
-                requestFilesPermission()
-            } else {
-                onFilesPermissionDenied()
-            }*/
-
-            runBlocking {
-                launch {
-
-                    try {
-                        if (meal == null) {
-                            val response: HttpResponse = client.post("$server_ip/addMeal") {
-                                body = MultiPartFormDataContent(
-                                    formData {
-                                        append("file", encodedBytes)
-                                        append("name", nameText.toString())
-                                        append("description", descriptionText.toString())
-                                        append("price", parseInt(priceText.toString()))
+                                val response: HttpResponse = client.post("$server_ip/addMeal") {
+                                    body = MultiPartFormDataContent(
+                                        formData {
+                                            if (encodedBytes != null) {
+                                                append("file", encodedBytes!!)
+                                            }
+                                            append("name", nameText)
+                                            append("description", descriptionText)
+                                            append("price", parseInt(priceText))
+                                        }
+                                    )
+                                    header("Authorization", token)
+                                }
+                                Toast.makeText(
+                                    this@NewMealActivity,
+                                    "Meal added",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                val response: HttpResponse =
+                                    client.put("$server_ip/editMeal/${meal.id}") {
+                                        body = MultiPartFormDataContent(
+                                            formData {
+                                                if (encodedBytes != null) {
+                                                    append("file", encodedBytes!!)
+                                                }
+                                                append("name", nameText)
+                                                append("description", descriptionText)
+                                                append("price", parseInt(priceText))
+                                            }
+                                        )
+                                        header("Authorization", token)
                                     }
-                                )
-                                header("Authorization", token)
+                                Toast.makeText(
+                                    this@NewMealActivity,
+                                    "Meal edited",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
-                        } else {
-                            val response: HttpResponse = client.put("$server_ip/editMeal/${meal.id}") {
-                                body = MultiPartFormDataContent(
-                                    formData {
-                                        append("file", encodedBytes)
-                                        append("name", nameText.toString())
-                                        append("description", descriptionText.toString())
-                                        append("price", parseInt(priceText.toString()))
-                                    }
-                                )
-                                header("Authorization", token)
-                            }
-                        }
 
+                            this@NewMealActivity.onBackPressed()
+                            return@launch
 
-                        /*val response: HttpResponse = client.submitFormWithBinaryData(
+                            /*val response: HttpResponse = client.submitFormWithBinaryData(
                             url = "$server_ip/addMeal",
                             formData = formData {
                                 append("file", File(realPath).readBytes(), Headers.build {
@@ -120,14 +134,19 @@ class NewMealActivity() : AppCompatActivity() {
                                 append("price", 1)
                             }
                         )*/
-                        Toast.makeText(this@NewMealActivity, "Meal added", Toast.LENGTH_LONG).show()
-                        //this@NewMealActivity.onBackPressed()
-                    } catch (e: Exception) {
-                        println(e.localizedMessage)
-                        ErrorOutput(this@NewMealActivity, e)
-                        when (e) {
-                            is ClientRequestException -> {
-                                Toast.makeText(this@NewMealActivity, "The meal is already in database", Toast.LENGTH_LONG).show()
+
+                            //this@NewMealActivity.onBackPressed()
+                        } catch (e: Exception) {
+                            println(e.localizedMessage)
+                            ErrorOutput(this@NewMealActivity, e)
+                            when (e) {
+                                is ClientRequestException -> {
+                                    Toast.makeText(
+                                        this@NewMealActivity,
+                                        "Check input data",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
                             }
                         }
                     }
