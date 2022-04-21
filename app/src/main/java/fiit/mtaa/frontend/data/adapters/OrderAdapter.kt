@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.Order
 import fiit.mtaa.frontend.ui.client
+import fiit.mtaa.frontend.ui.isOnline
 import fiit.mtaa.frontend.ui.server_ip
 import fiit.mtaa.frontend.ui.token
 import io.ktor.client.request.*
@@ -53,17 +55,25 @@ class OrderAdapter(
         }
 
         holder.btnDone.setOnClickListener {
-            val id = orders[position].id
-            runBlocking {
-                launch {
-                    val response: HttpResponse = client.put("$server_ip/setOrderDone/$id") {
-                        header("Authorization", token)
+            if (isOnline(context)) {
+                val id = orders[position].id
+                runBlocking {
+                    launch {
+                        val response: HttpResponse = client.put("$server_ip/setOrderDone/$id") {
+                            header("Authorization", token)
+                        }
                     }
                 }
+                orders.removeAt(position)
+                this.notifyItemRemoved(position)
+                notifyItemRangeChanged(position, getItemCount());
+            } else {
+                Toast.makeText(
+                    context,
+                    "Internet connection not found",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-            orders.removeAt(position)
-            this.notifyItemRemoved(position)
-            notifyItemRangeChanged(position, getItemCount());
         }
     }
 }

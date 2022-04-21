@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity() {
                             body = mapObj
                         }
                         saveObject(this@MainActivity, User( usernameText.toString(),
+                            passwordText.toString(),
                             response.get("role").asString ), "userData.ser")
                         Toast.makeText(this@MainActivity, "Logged " +
                                 "as $usernameText", Toast.LENGTH_LONG).show()

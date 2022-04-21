@@ -13,15 +13,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import fiit.mtaa.frontend.R
 import fiit.mtaa.frontend.data.model.Meal
-import fiit.mtaa.frontend.ui.NewMealActivity
-import fiit.mtaa.frontend.ui.client
-import fiit.mtaa.frontend.ui.server_ip
-import fiit.mtaa.frontend.ui.token
+import fiit.mtaa.frontend.ui.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.launch
@@ -97,17 +95,25 @@ class MealAdapter (
             }
 
             holder.deleteDtn.setOnClickListener {
-                val id = dataset[position].id
-                runBlocking {
-                    launch {
-                        val response: HttpResponse = client.delete("$server_ip/delMeal/$id") {
-                            header("Authorization", token)
+                if (isOnline(context)) {
+                    val id = dataset[position].id
+                    runBlocking {
+                        launch {
+                            val response: HttpResponse = client.delete("$server_ip/delMeal/$id") {
+                                header("Authorization", token)
+                            }
                         }
                     }
+                    dataset.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, getItemCount());
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Internet connection not found",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                dataset.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, getItemCount());
             }
         }
     }

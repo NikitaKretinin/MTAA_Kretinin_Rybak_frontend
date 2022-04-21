@@ -59,12 +59,8 @@ class HomepageActivity() : AppCompatActivity() {
         }
 
         btnManageOrders.setOnClickListener {
-            if (isOnline(this@HomepageActivity)) {
-                val intent = Intent(this@HomepageActivity, OrdersActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this@HomepageActivity, "Orders management needs an internet connection", Toast.LENGTH_LONG).show()
-            }
+            val intent = Intent(this@HomepageActivity, OrdersActivity::class.java)
+            startActivity(intent)
         }
 
         btnLiveCooking.setOnClickListener {
